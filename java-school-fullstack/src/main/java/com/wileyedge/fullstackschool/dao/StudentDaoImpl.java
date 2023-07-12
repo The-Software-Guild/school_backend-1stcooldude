@@ -15,73 +15,89 @@ import java.util.List;
 @Repository
 public class StudentDaoImpl implements StudentDao {
 
-    @Autowired
-    private final JdbcTemplate jdbcTemplate;
+	@Autowired
+	private final JdbcTemplate jdbcTemplate;
 
-    public StudentDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+	public StudentDaoImpl(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 
-    @Override
-    @Transactional
-    public Student createNewStudent(Student student) {
-        //YOUR CODE STARTS HERE
+	@Override
+	@Transactional
+	public Student createNewStudent(Student student) {
+		// YOUR CODE STARTS HERE
 
-         return null;
+		String sql = "INSERT INTO student VALUES(?, ?, ?)";
 
-        //YOUR CODE ENDS HERE
-    }
+		jdbcTemplate.update(sql, student.getStudentId(), student.getStudentFirstName(), student.getStudentLastName());
 
-    @Override
-    public List<Student> getAllStudents() {
-        //YOUR CODE STARTS HERE
+		return student;
 
-        return null;
+		// YOUR CODE ENDS HERE
+	}
 
-        //YOUR CODE ENDS HERE
-    }
+	@Override
+	public List<Student> getAllStudents() {
+		// YOUR CODE STARTS HERE
 
-    @Override
-    public Student findStudentById(int id) {
-        //YOUR CODE STARTS HERE
+		String sql = "SELECT * FROM student";
 
-        return null;
+		return jdbcTemplate.query(sql, new StudentMapper());
 
-        //YOUR CODE ENDS HERE
-    }
+		// YOUR CODE ENDS HERE
+	}
 
-    @Override
-    public void updateStudent(Student student) {
-        //YOUR CODE STARTS HERE
+	@Override
+	public Student findStudentById(int id) {
+		// YOUR CODE STARTS HERE
 
+		String sql = "SELECT * FROM student WHERE sid=?";
 
-        //YOUR CODE ENDS HERE
-    }
+		return jdbcTemplate.queryForObject(sql, new Object[] { id }, new StudentMapper());
 
-    @Override
-    public void deleteStudent(int id) {
-        //YOUR CODE STARTS HERE
+		// YOUR CODE ENDS HERE
+	}
 
+	@Override
+	public void updateStudent(Student student) {
+		// YOUR CODE STARTS HERE
 
+		String sql = "UPDATE student SET fName=?, lName=? WHERE sid=?";
+		jdbcTemplate.update(sql, student.getStudentFirstName(), student.getStudentLastName(), student.getStudentId());
 
-        //YOUR CODE ENDS HERE
-    }
+		// YOUR CODE ENDS HERE
+	}
 
-    @Override
-    public void addStudentToCourse(int studentId, int courseId) {
-        //YOUR CODE STARTS HERE
+	@Override
+	public void deleteStudent(int id) {
+		// YOUR CODE STARTS HERE
 
+		String sql = "DELETE FROM student WHERE sid=?";
 
+		jdbcTemplate.update(sql, id);
 
-        //YOUR CODE ENDS HERE
-    }
+		// YOUR CODE ENDS HERE
+	}
 
-    @Override
-    public void deleteStudentFromCourse(int studentId, int courseId) {
-        //YOUR CODE STARTS HERE
+	@Override
+	public void addStudentToCourse(int studentId, int courseId) {
+		// YOUR CODE STARTS HERE
 
+		String sql = "INSERT INTO course_student VALUES (?, ?)";
 
+		jdbcTemplate.update(sql, studentId, courseId);
 
-        //YOUR CODE ENDS HERE
-    }
+		// YOUR CODE ENDS HERE
+	}
+
+	@Override
+	public void deleteStudentFromCourse(int studentId, int courseId) {
+		// YOUR CODE STARTS HERE
+		
+		String sql = "DELETE FROM course_student WHERE student_id=?";
+
+		jdbcTemplate.update(sql, studentId);
+		
+		// YOUR CODE ENDS HERE
+	}
 }

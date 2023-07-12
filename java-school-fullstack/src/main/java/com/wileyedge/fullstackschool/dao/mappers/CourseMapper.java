@@ -8,10 +8,9 @@ import java.sql.SQLException;
 public class CourseMapper implements RowMapper<Course> {
     @Override
     public Course mapRow(ResultSet rs, int rowNum) throws SQLException {
-        //YOUR CODE STARTS HERE
-
-        return null;
-
-        //YOUR CODE ENDS HERE
+    	Course course = new Course();
+        course.setCourseName(rs.getString("COURSECODE"));
+        course.setCourseDesc(rs.getString("COURSEDESC"));
+        return course;
     }
 }
